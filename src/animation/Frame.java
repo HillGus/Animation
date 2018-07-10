@@ -20,14 +20,13 @@ public class Frame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setLocationRelativeTo(null);
-		setBackground(Color.WHITE);
 		
-		BufferedImage[] imagens = Animation.getImages("input/standby.png", 0, 0, 140, 51, 35, 51, Color.decode("#33d402"));
+		BufferedImage[] imagens = Animation.getImages("input/standby.png", 35, 51, Color.decode("#33d402"));
 		
-		Animation anim = new Animation(0.7, 4, imagens);
+		Animation anim = new Animation(0.5, 3, imagens, Animation.BACKWARDS);
 		anim.setLocation(50, 50);
 		
-		getContentPane().add(anim);
+		add(anim);
 		
 		setVisible(true);
 		
