@@ -3,7 +3,6 @@ package animation;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,16 +11,18 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import componentes.PixeledImage;
+
 public class Animation extends JPanel {
 
-	
+	private static final long serialVersionUID = 1L;
+
+
 	public static final int DEFAULT = 1, BOOMERANGUE = 2, BACKWARDS = 3;
 	
 	
-	private ArrayList<BufferedImage> imagens = new ArrayList<>();
-
+	private ArrayList<PixeledImage> imagens = new ArrayList<>();
 	private Container parent;
-
 	private Graphics2D g;
 	
 	private int espera;
@@ -38,7 +39,7 @@ public class Animation extends JPanel {
 
 			try {
 
-				BufferedImage img = ImageIO.read(new File(pasta + "/" + imagem + "." + extensao));
+				PixeledImage img = ImageIO.read(new File(pasta + "/" + imagem + "." + extensao));
 
 				this.imagens.add(img);
 
@@ -55,12 +56,12 @@ public class Animation extends JPanel {
 		}
 	}
 
-	public Animation(double segundos, int escala, BufferedImage[] imagens) {
+	public Animation(double segundos, int escala, PixeledImage[] imagens) {
 
 		this(segundos, escala, imagens, DEFAULT);
 	}
 
-	public Animation(double segundos, int escala, BufferedImage[] imagens, int modo) {
+	public Animation(double segundos, int escala, PixeledImage[] imagens, int modo) {
 		
 		this.modo = modo;
 		
@@ -72,10 +73,12 @@ public class Animation extends JPanel {
 		espera = (int) (segundos * 1000 / imagens.length);
 		this.escala = escala;
 		
-		for (BufferedImage imagem : imagens) {
+		for (PixeledImage imagem : imagens) {
 
 			this.imagens.add(imagem);
 
+			System.out.println();
+			
 			if (imagem.getHeight() > maxHeight) {
 
 				maxHeight = imagem.getHeight();
@@ -102,7 +105,7 @@ public class Animation extends JPanel {
 		
 			case 1: {
 				
-				for (BufferedImage imagem : imagens) {
+				for (PixeledImage imagem : imagens) {
 					
 					desenharImagem(imagem);
 				}
@@ -120,6 +123,7 @@ public class Animation extends JPanel {
 					
 					desenharImagem(imagens.get(i));
 				}
+				
 				break;
 			}
 			
@@ -134,7 +138,7 @@ public class Animation extends JPanel {
 		}
 	}
 	
-	private void desenharImagem(BufferedImage imagem) {
+	private void desenharImagem(PixeledImage imagem) {
 		
 		int x = getX();
 		int y = getY() + maxHeight * escala - imagem.getHeight() * escala;
@@ -161,10 +165,10 @@ public class Animation extends JPanel {
 	}
 	
 	
-	public static BufferedImage[] getImages(String arquivo, int x, int y, int w, int h, int dw, int dh,
+	public static PixeledImage[] getImages(String arquivo, int x, int y, int w, int h, int dw, int dh,
 			Color corFundo) {
 
-		BufferedImage imagemPrincipal = null;
+		PixeledImage imagemPrincipal = null;
 
 		try {
 
@@ -179,9 +183,9 @@ public class Animation extends JPanel {
 		return separarImagens(imagemPrincipal, x, y, w, h, dw, dh);
 	}
 	
-	public static BufferedImage[] getImages(String arquivo, int dw, int dh, Color corFundo) {
+	public static PixeledImage[] getImages(String arquivo, int dw, int dh, Color corFundo) {
 		
-		BufferedImage imagemPrincipal = null;
+		PixeledImage imagemPrincipal = null;
 		
 		try {
 			
@@ -198,9 +202,9 @@ public class Animation extends JPanel {
 	}
 
 
-	private static BufferedImage tirarCor(BufferedImage imagem, Color cor) {
+	private static PixeledImage tirarCor(PixeledImage imagem, Color cor) {
 		
-		BufferedImage copia = new BufferedImage(imagem.getWidth(), imagem.getHeight(), imagem.getType());
+		PixeledImage copia = new PixeledImage(imagem.getWidth(), imagem.getHeight(), imagem.getType());
 		
 		for (int x = 0; x < imagem.getWidth(); x++) {
 			
@@ -216,9 +220,9 @@ public class Animation extends JPanel {
 		return copia;
 	}
 	
-	private static BufferedImage[] separarImagens(BufferedImage imagemPrincipal, int x, int y, int w, int h, int dw, int dh) {
+	private static PixeledImage[] separarImagens(PixeledImage imagemPrincipal, int x, int y, int w, int h, int dw, int dh) {
 
-		BufferedImage[] imagens = new BufferedImage[(w / dw) * (h / dh)];
+		PixeledImage[] imagens = new PixeledImage[(w / dw) * (h / dh)];
 		
 		int i = 0;
 
@@ -243,10 +247,10 @@ public class Animation extends JPanel {
 		return imagens;
 	}
 
-	private static BufferedImage separarImagem(BufferedImage imagemPrincipal, int x, int y, int dw, int dh, int l,
+	private static PixeledImage separarImagem(PixeledImage imagemPrincipal, int x, int y, int dw, int dh, int l,
 			int c) {
 
-		BufferedImage imagem = new BufferedImage(dw, dh, BufferedImage.TYPE_INT_ARGB);
+		PixeledImage imagem = new PixeledImage(dw, dh, PixeledImage.TYPE_INT_ARGB);
 
 		for (int j = 0; j < dw; j++) {
 

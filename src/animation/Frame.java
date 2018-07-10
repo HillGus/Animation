@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import componentes.PixeledImage;
+
 public class Frame extends JFrame {
 
 	
@@ -16,14 +18,14 @@ public class Frame extends JFrame {
 	
 	public Frame() {
 		
-		setSize(300, 300);
+		setSize(300, 350);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setLocationRelativeTo(null);
 		
-		BufferedImage[] imagens = Animation.getImages("input/standby.png", 35, 51, Color.decode("#33d402"));
+		PixeledImage[] imagens = Animation.getImages("input/standby.png", 35, 51, Color.decode("#33d402"));
 		
-		Animation anim = new Animation(0.5, 3, imagens, Animation.BACKWARDS);
+		Animation anim = new Animation(1, 5, imagens, Animation.BOOMERANGUE);
 		anim.setLocation(50, 50);
 		
 		add(anim);
