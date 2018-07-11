@@ -1,18 +1,18 @@
 package componentes;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class PixeledImage extends BufferedImage {
 	
 	
-	private ArrayList<Pixel> pixels = new ArrayList<>();
-	
-	
 	public PixeledImage(int width, int height, int imageType) {
 		
 		super(width, height, imageType);
+		
+		clear();
 	}
 
 	public PixeledImage(BufferedImage img) {
@@ -36,6 +36,14 @@ public class PixeledImage extends BufferedImage {
 			}
 		}
 	}
+	
+	public void clear() {
+		
+		Graphics2D g = (Graphics2D) getGraphics();
+		g.setColor(new Color(0, 0, 0, 0));
+		
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
 		
 
 	private void converter(BufferedImage img) {
@@ -45,22 +53,14 @@ public class PixeledImage extends BufferedImage {
 			for (int y = 0; y < img.getHeight(); y++) {
 				
 				setRGB(x, y, img.getRGB(x, y));
-				pixels.add(new Pixel(x, y, this));
 			}
 		}
 	}
 	
 	
-	public void addPixel(Pixel px) {
+	public void setPixel(Pixel px) {
 		
-		if (!pixels.contains(px)) {
-		
-			pixels.add(px);
-			
-			try {
-				setRGB(px.getX(), px.getY(), px.getRGB());
-			} catch (Exception e) {}
-		}
+		setRGB(px.getX(), px.getY(), px.getRGB());
 	}
 	
 	public Pixel getPixel(int x, int y) {
@@ -71,6 +71,17 @@ public class PixeledImage extends BufferedImage {
 	}
 
 	public ArrayList<Pixel> getPixels() {
+		
+		ArrayList<Pixel> pixels = new ArrayList<>();
+		
+		for (int y = 0; y < getHeight(); y++) {
+			
+			for (int x = 0; x < getWidth(); x++) {
+				
+				if (getPixel(x, y).getRGB() != new Color(0, 0, 0, 0).getRGB())
+					pixels.add(getPixel(x, y));
+			}
+		}
 		
 		return pixels;
 	}

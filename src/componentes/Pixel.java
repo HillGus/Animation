@@ -1,5 +1,6 @@
 package componentes;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Pixel {
@@ -60,7 +61,11 @@ public class Pixel {
 			for (int y = getY() - 1; y <= getY() + 1; y++) {
 				
 				try {
-					pixels.add(new Pixel(x, y, imagem));
+					
+					Pixel px = new Pixel(x, y, imagem);
+					
+					if (px.getRGB() != new Color(0, 0, 0, 0).getRGB()) 
+						pixels.add(px);
 				} catch (Exception e) {}
 			}
 		}

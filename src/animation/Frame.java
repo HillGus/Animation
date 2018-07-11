@@ -17,8 +17,8 @@ public class Frame extends JFrame {
 	
 	public static void main(String args[]) {
 		
-		PixeledImage[] imagens = ImageHandler.cutImages("input/standby.png", Color.decode("#33d402"));
-		//new Frame();
+		
+		new Frame();
 	}
 	
 	
@@ -29,15 +29,15 @@ public class Frame extends JFrame {
 		setLayout(null);
 		setLocationRelativeTo(null);
 		
+		PixeledImage[] imagens = ImageHandler.cutImages("input/standby.png", Color.decode("#33d402"));
 		
-		
-		/*Animation anim = new Animation(0.7, 4, imagens, Animation.DEFAULT);
+		Animation anim = new Animation(0.7, 4, imagens, Animation.BOOMERANGUE);
 		anim.setLocation(50, 50);
 		
 		add(anim);
 		
 		setVisible(true);
 		
-		anim.animate();*/
+		anim.animate();
 	}
 }
