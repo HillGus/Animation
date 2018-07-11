@@ -1,8 +1,8 @@
 package animation;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +39,8 @@ public class Animation extends JPanel {
 
 			try {
 
-				PixeledImage img = ImageIO.read(new File(pasta + "/" + imagem + "." + extensao));
+				BufferedImage buffImg = ImageIO.read(new File(pasta + "/" + imagem + "." + extensao));
+				PixeledImage img = new PixeledImage(buffImg);
 
 				this.imagens.add(img);
 
@@ -93,10 +94,16 @@ public class Animation extends JPanel {
 
 		g = (Graphics2D) parent.getGraphics();
 
-		while (true) {
+		new Thread(new Runnable() {
+			
+			public void run() {
+				
+				while (true) {
 
-			desenharImagens();
-		}
+					desenharImagens();
+				}
+			}
+		}).start();
 	}
 
 	private void desenharImagens() {
@@ -162,106 +169,5 @@ public class Animation extends JPanel {
 
 		g.setColor(parent.getBackground());
 		g.fillRect(x, y, w, h);
-	}
-	
-	
-	public static PixeledImage[] getImages(String arquivo, int x, int y, int w, int h, int dw, int dh,
-			Color corFundo) {
-
-		PixeledImage imagemPrincipal = null;
-
-		try {
-
-			imagemPrincipal = ImageIO.read(new File(arquivo));
-		} catch (IOException e) {
-
-			System.out.println("Impossível encontrar imagem principal");
-		}
-
-		imagemPrincipal = tirarCor(imagemPrincipal, corFundo);
-		
-		return separarImagens(imagemPrincipal, x, y, w, h, dw, dh);
-	}
-	
-	public static PixeledImage[] getImages(String arquivo, int dw, int dh, Color corFundo) {
-		
-		PixeledImage imagemPrincipal = null;
-		
-		try {
-			
-			imagemPrincipal = ImageIO.read(new File(arquivo));
-		} catch (Exception e) {
-			
-			System.out.println("n deu");
-		}
-		
-		int w = imagemPrincipal.getWidth();
-		int h = imagemPrincipal.getHeight();
-		
-		return getImages(arquivo, 0, 0, w, h, dw, dh, corFundo);
-	}
-
-
-	private static PixeledImage tirarCor(PixeledImage imagem, Color cor) {
-		
-		PixeledImage copia = new PixeledImage(imagem.getWidth(), imagem.getHeight(), imagem.getType());
-		
-		for (int x = 0; x < imagem.getWidth(); x++) {
-			
-			for (int y = 0; y < imagem.getHeight(); y++) {
-				
-				if (imagem.getRGB(x, y) != cor.getRGB()) {
-					
-					copia.setRGB(x, y, imagem.getRGB(x, y));
-				}
-			}
-		}
-		
-		return copia;
-	}
-	
-	private static PixeledImage[] separarImagens(PixeledImage imagemPrincipal, int x, int y, int w, int h, int dw, int dh) {
-
-		PixeledImage[] imagens = new PixeledImage[(w / dw) * (h / dh)];
-		
-		int i = 0;
-
-		for (int l = 0; l < h / dh; l++) {
-
-			for (int c = 0; c < w / dw; c++) {
-
-				imagens[i] = separarImagem(imagemPrincipal, x, y, dw, dh, l, c);
-
-				try {
-
-					ImageIO.write(imagens[i], "png", new File("output/" + i + ".png"));
-				} catch (IOException e) {
-
-					System.out.println("Não foi possível salvar a imagem");
-				}
-
-				i++;
-			}
-		}
-		
-		return imagens;
-	}
-
-	private static PixeledImage separarImagem(PixeledImage imagemPrincipal, int x, int y, int dw, int dh, int l,
-			int c) {
-
-		PixeledImage imagem = new PixeledImage(dw, dh, PixeledImage.TYPE_INT_ARGB);
-
-		for (int j = 0; j < dw; j++) {
-
-			for (int k = 0; k < dh; k++) {
-
-				int pixelOriginal = imagemPrincipal.getRGB(x + j + c * dw, y + k + l * dh);
-
-				imagem.setRGB(j, k, pixelOriginal);
-			}
-		}
-
-		return imagem;
 	}
 }
