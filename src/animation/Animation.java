@@ -77,8 +77,6 @@ public class Animation extends JPanel {
 		for (PixeledImage imagem : imagens) {
 
 			this.imagens.add(imagem);
-
-			System.out.println();
 			
 			if (imagem.getHeight() > maxHeight) {
 
@@ -92,11 +90,11 @@ public class Animation extends JPanel {
 
 		this.parent = SwingUtilities.getWindowAncestor(this);
 
-		g = (Graphics2D) parent.getGraphics();
-
 		new Thread(new Runnable() {
 			
 			public void run() {
+				
+				g = (Graphics2D) parent.getGraphics();
 				
 				while (true) {
 

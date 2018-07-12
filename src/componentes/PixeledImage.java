@@ -8,16 +8,16 @@ import java.util.ArrayList;
 public class PixeledImage extends BufferedImage {
 	
 	
-	public PixeledImage(int width, int height, int imageType) {
+	public PixeledImage(int width, int height) {
 		
-		super(width, height, imageType);
+		super(width, height, BufferedImage.TYPE_INT_ARGB);
 		
 		clear();
 	}
 
 	public PixeledImage(BufferedImage img) {
 		
-		super(img.getWidth(), img.getHeight(), img.getType());
+		super(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
 		converter(img);
 	}
